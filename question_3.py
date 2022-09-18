@@ -1,16 +1,17 @@
 import os
+import re
 
 DEFAULT_EXTENSIONS = ["txt", "csv"]
 
 
-class TheyreEatingHer(RuntimeError):
+class TheyreEatingHer(Exception):
     """
     A poorly acted exception.
     """
     pass
 
 
-class ThenTheyreGoingToEatMe(TheyreEatingHer):
+class ThenTheyreGoingToEatMe(Exception):
     """
     A more specific poorly acted exception.
     """
@@ -26,15 +27,14 @@ def troll_check(text):
     Raises `ThenTheyreGoingToEatMe` if the substring 'Nilbog' is found in
         `text`, and the substring 'troll' is not found in `text`.
     """
-
+    text = re.sub(r"\bgoblin\b","elf",text.lower())
+    text = re.sub(r"\bhobgoblin\b", "orc", text.lower())
     if "troll" in text:
-        raise TheyreEatingHer("Best line ever.")
+        raise TheyreEatingHer
 
-    if "Nilbog" in text and "troll" not in text:
-        raise ThenTheyreGoingToEatMe("Oh my ...")
-
-    text.replace("goblin", "elf").replace("hobgoblin", "orc")
-
+    if "nilbog" in text.lower() and "troll" not in text.lower():
+        raise ThenTheyreGoingToEatMe
+    return text
 
 def print_troll_checked(src_fn):
     """
@@ -47,19 +47,19 @@ def print_troll_checked(src_fn):
     Returns -1 if no 'troll' was found, but a 'Nilbog' was found. (A 'Nilbog'
         is a negative troll for some reason. Don't think about it too much.)
     """
-    file = open('directory/' + src_fn)
+    file = open(src_fn)
     text = file.read()
     file.close()
     try:
         print(troll_check(text))
         return 0
-
+    
     except TheyreEatingHer:
         print("We found trolls!")
         return 1
 
     except ThenTheyreGoingToEatMe:
-        print("Looks like a nice place for a vacaiton!")
+        print("Looks like a nice place for a vacation!")
         return -1
 
 
@@ -83,10 +83,11 @@ def scan_directory(directory, extensions=[], include_defaults=True):
     
     for root, dirs, files in os.walk(directory):
         for fn in files:
-            print(fn.split(".")[1])
+            if len(fn.split(".")) < 2:
+                continue
             if fn.split(".")[1] in extensions:
-                print(fn)
-                ret = print_troll_checked(fn)
+                print(directory)
+                ret = print_troll_checked(directory + "/" +fn)
                 number_of_troll_files += ret
 
     print("Scanning complete. Found {} trolls.".format(number_of_troll_files))

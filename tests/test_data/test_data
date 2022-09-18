@@ -1,5 +1,0 @@
-This is a file containing a set number of words to be read by the test functions:
-The words marked for testing/reading will be repeated a number of stipulated times 
-and the test functions will be expected to produce the correct count.
-
-
