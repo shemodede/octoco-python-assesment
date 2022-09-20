@@ -15,11 +15,6 @@ db_filename = " ".join(args.db_file)
 
 db_full_name = db_filename + ".cache"
 
-# print(hashlib.md5(hash_string_input.encode('utf-8')).hexdigest())
-# print()
-# print(db_file_name)
-
-
 def create_db_table():
     conn = sqlite3.connect(db_full_name)
     try:

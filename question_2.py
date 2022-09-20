@@ -19,10 +19,3 @@ def get_tick_data():
 
 while(True):
     get_tick_data()
-
-# KEY ID
-# hbha6uwau5me3
-
-
-# Secret
-# qNL2LrBGDlNioGzCgI8iDuqtve0PRA0UuWTybPsgJpY
