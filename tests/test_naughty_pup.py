@@ -1,4 +1,5 @@
 import unittest
+from unittest import result
 from .test_data.test_data import TROLL_CHECK_EXCEPTION_NEITHER_STRING, TROLL_CHECK_EXCEPTION_NILBOG_STRING, TROLL_CHECK_EXCEPTION_TROLL_STRING, TROLL_CHECK_WORD_REPLACEMENT_STRING
 import question_3
 import os
@@ -102,6 +103,31 @@ class TestTrollCheckFunction(unittest.TestCase):
         resp_text = question_3.troll_check(text)
         self.assertEqual(resp_text.lower(), text.lower())
 
+
+class TestPrintTrollCheckFunction(unittest.TestCase):
+    def setUp(self) -> None:
+        self.resource_class = CreateTestResourceTextFiles()
+        self.resource_class.createWordReplacementFile()
+        self.resource_class.createTrollExceptionFile()
+        self.resource_class.createNilbogExceptionFile()
+        self.resource_class.createTrollCheckNeitherExceptionFile()
+        return super().setUp()
+
+    def tearDown(self) -> None:
+        self.resource_class.deleteTrollCheckFunctionFiles()
+        return super().tearDown()
+
+    def test_neither_troll_nor_nilbog_result(self):
+        result = question_3.print_troll_checked(self.resource_class.troll_check_with_neither_exception_test_file_name)
+        self.assertEqual(result, 0)
+
+    def test_with_troll_in_file(self):
+        result = question_3.print_troll_checked(self.resource_class.troll_check_with_troll_exception_test_file_name)
+        self.assertEqual(result, 1)
+
+    def test_with_nilbog_only_in_file(self):
+        result = question_3.print_troll_checked(self.resource_class.troll_check_with_nilbog_exception_test_file_name)
+        self.assertEqual(result, -1)
 
 class TestScanDirectoryFunction(unittest.TestCase):
 
